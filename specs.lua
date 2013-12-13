@@ -1,3 +1,1 @@
--- Instead of using xml/json, I figure Lua's table
--- data structure will work for now.
-specs = {musicPath = "/assets/music/"}
+filepaths = {musicPath = "/assets/music/", notePatternsPath = "specs/notePatterns/"}
