@@ -1,5 +1,5 @@
 require 'class'
-require 'ball'
+require 'Ball'
 require 'specs'
 vector = require 'hump.vector'
 Timer = require 'hump.timer'
