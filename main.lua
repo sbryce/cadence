@@ -1,8 +1,8 @@
 require 'class'
 vector = require 'hump.vector'
 Timer = require 'hump.timer'
-require 'player'
-require 'noteGroup'
+require 'Player'
+require 'NoteGroup'
 
 function love.load()
   player = Player(vector(400, 300))
