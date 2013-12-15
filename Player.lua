@@ -21,6 +21,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
+  love.graphics.setColor(71, 71, 82)
   love.graphics.arc("line", self.pos.x, self.pos.y, self.radius, self.startAngle, self.startAngle + self.angle)
 end
 

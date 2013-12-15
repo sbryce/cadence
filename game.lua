@@ -9,6 +9,7 @@ game = {}
 function game:enter()
   player = Player(vector(400, 300))
   noteGroup = NoteGroup("fifths", 120, player)
+  love.graphics.setBackgroundColor(207, 230, 230)
 end
 
 function game:update(dt)

@@ -32,5 +32,6 @@ function Ball:update(dt)
 end
 
 function Ball:draw()
+  love.graphics.setColor(71, 71, 82)
   love.graphics.circle("fill", self.pos.x, self.pos.y, self.radius, 20)
 end
