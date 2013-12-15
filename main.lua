@@ -1,21 +1,19 @@
-require 'class'
-vector = require 'hump.vector'
-Timer = require 'hump.timer'
-require 'Player'
-require 'NoteGroup'
+Gamestate = require 'hump.gamestate'
+require 'game'
 
-function love.load()
-  player = Player(vector(400, 300))
-  noteGroup = NoteGroup("fifths", 120, player)
+local menu = {}
+
+function love:load()
+  Gamestate.push(menu)
+  Gamestate.registerEvents()
 end
 
-function love.update(dt)
-  player:update(dt)
-  noteGroup:update(dt)
-  Timer.update(dt)
+function menu:draw()
+  love.graphics.print("Press space to continue", 10, 10)
 end
 
-function love.draw()
-  player:draw()
-  noteGroup:draw()
+function menu:keyreleased(key)
+  if key == ' ' then
+      Gamestate.switch(game)
+  end
 end
