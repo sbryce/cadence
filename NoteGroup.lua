@@ -43,19 +43,7 @@ function NoteGroup:spawnNote(noteSpecs)
 end
 
 function NoteGroup:update(dt)
-  -- Adjust ball velocities to sync with music thread
-    --local beatPercent = (currentSample % self.samplesPerBeat) / self.samplesPerBeat
-    --[[if currentBeat > self.prevBeat then
-      for i, ball in ipairs(self.balls) do
-        if not ball.willHit then
-        ball.vel = (math.abs(ball.pos:dist(self.player.pos)) - self.player.radius + 2) / ((ball.beat - currentBeat - 1) * 0.5)
-        end
-      end
-    end
-    self.prevBeat = currentBeat
-  end]]--
 
-  
   -- Update all the balls
   for i, ball in ipairs(self.balls) do
     ball:update(dt)
@@ -73,6 +61,7 @@ function NoteGroup:update(dt)
     end
   end
 
+  -- Play music
   if game.globalBeat > self.startBeat and game.prevGlobalBeat < self.startBeat then
     self.audioSource:play()
   end
