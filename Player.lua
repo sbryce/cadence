@@ -9,14 +9,26 @@ function Player:init(pos)
   self.radius = 50
   self.angle = 0.35 * math.pi
   self.angularVelocity = 8
+  self.targetAngle = self.angle
 end
 
 function Player:update(dt)
+  -- Handle input
   if love.keyboard.isDown("right") then
     self.startAngle = (self.startAngle + self.angularVelocity * dt) % (2 * math.pi)
   end
   if love.keyboard.isDown("left") then
     self.startAngle = (self.startAngle - self.angularVelocity * dt) % (2 * math.pi)
+  end
+
+  -- Lerp shield width
+  local shieldMutability = 0.5
+  if math.abs(self.targetAngle - self.angle) > 0.1 then
+    if self.targetAngle < self.angle then
+      self.angle = self.angle - shieldMutability * dt
+    else
+      self.angle = self.angle + shieldMutability * dt
+    end
   end
 end
 
@@ -44,4 +56,8 @@ function Player:isBlocked(vec)
       return true
     end
   return false
+end
+
+function Player:setShieldWidth(width)
+  self.targetAngle = width
 end
