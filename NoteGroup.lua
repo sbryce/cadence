@@ -31,6 +31,8 @@ function NoteGroup:init(filename, startBeat, player)
   local patternPath = filepaths.notePatternsPath .. filename .. ".lua"
   local pattern = loadTable(readAll(patternPath))
   self.pattern = pattern.notes
+  self.params = pattern.params
+  self.player.angle = pattern.params.shieldRad
   self.startBeat = startBeat
   self.spawnDistance = 600
 end
@@ -53,15 +55,19 @@ function NoteGroup:update(dt)
   end
 
   -- Spawn balls
-  for __, note in ipairs(self.pattern) do
+  for i, note in ipairs(self.pattern) do
     local offset = 2 * ((self.spawnDistance - self.player.radius) / note.speed)
     local nb = note.beat + self.startBeat - 1
     if nb < game.globalBeat + offset and nb > game.prevGlobalBeat + offset then
       self:spawnNote(note)
+      if i == 1 then
+        -- Things to do when first note spawns
+        self.player:setShieldWidth(self.params.shieldRad)
+      end
     end
   end
 
-  -- Play music
+  -- Things to do when first beat hits
   if game.globalBeat > self.startBeat and game.prevGlobalBeat < self.startBeat then
     self.audioSource:play()
   end
