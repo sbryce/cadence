@@ -3,15 +3,15 @@ vector = require 'hump.vector'
 
 Ball = newclass("Ball")
 
-function Ball:init(player, pos, vel, beat, radius)
+function Ball:init(player, pos, noteSpecs)
   self.player = player
   self.pos = pos
-  self.vel = vel
+  self.vel = noteSpecs.speed
   self.active = true
   self.prevPos = pos
   self.collisionTime = collisionTime
-  self.beat = beat
-  self.radius = radius
+  self.beat = noteSpecs.beat
+  self.radius = noteSpecs.radius
   self.willHit = false
 end
 
