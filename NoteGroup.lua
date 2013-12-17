@@ -23,23 +23,15 @@ end
 
 -- We pass in beats per minute (bpm) instead of the more logical beats per second
 -- because bpm is the standard measure of tempo in the music world
-function NoteGroup:init(filename, beatsPerMinute, player)
+function NoteGroup:init(filename, startBeat, player)
   self.balls = {}
   self.player = player
   local filepath = filepaths.musicPath .. filename .. ".mp3"
   self.audioSource = love.audio.newSource(filepath)
-  local audioData = love.sound.newSoundData(filepath)
-  local sampleRate = audioData:getSampleRate()
-  self.beatsPerSecond = 60 / beatsPerMinute
-  self.samplesPerBeat = sampleRate / self.beatsPerSecond
   local patternPath = filepaths.notePatternsPath .. filename .. ".lua"
   local pattern = loadTable(readAll(patternPath))
   self.pattern = pattern.notes
-  self.spawnBeat = 1
-  self.prevBeat = 0
-  self.musicPlaying = false
-  self.timedCurrentBeat = 0
-  self.timedPreviousBeat = 0
+  self.startBeat = startBeat
 end
 
 function NoteGroup:spawnNote(noteSpecs)
@@ -50,14 +42,9 @@ function NoteGroup:spawnNote(noteSpecs)
 end
 
 function NoteGroup:update(dt)
-  self.timedCurrentBeat = self.timedCurrentBeat + dt * (1.0 / self.beatsPerSecond)
-
   -- Adjust ball velocities to sync with music thread
-  --[[if self.musicPlaying then
-    local currentSample = self.audioSource:tell("samples")
-    local currentBeat = math.floor(currentSample / self.samplesPerBeat)
-    local beatPercent = (currentSample % self.samplesPerBeat) / self.samplesPerBeat
-    if currentBeat > self.prevBeat then
+    --local beatPercent = (currentSample % self.samplesPerBeat) / self.samplesPerBeat
+    --[[if currentBeat > self.prevBeat then
       for i, ball in ipairs(self.balls) do
         if not ball.willHit then
         ball.vel = (math.abs(ball.pos:dist(self.player.pos)) - self.player.radius + 2) / ((ball.beat - currentBeat - 1) * 0.5)
@@ -67,26 +54,27 @@ function NoteGroup:update(dt)
     self.prevBeat = currentBeat
   end]]--
 
+  
   -- Update all the balls
   for i, ball in ipairs(self.balls) do
     ball:update(dt)
     if not ball.active then
       table.remove(self.balls, i)
-      if not self.musicPlaying then
-        love.audio.play(self.audioSource)
-        self.musicPlaying = true
-      end
     end
   end
 
   -- Spawn balls
+  local offset = 2 * ((300 - self.player.radius) / 400)
   for __, note in ipairs(self.pattern) do
-    if note.beat < self.timedCurrentBeat and note.beat > self.timedPreviousBeat then
+    local nb = note.beat + self.startBeat - 1
+    if nb < game.globalBeat + offset and nb > game.prevGlobalBeat + offset then
       self:spawnNote(note)
     end
   end
 
-  self.timedPreviousBeat = self.timedCurrentBeat
+  if game.globalBeat > self.startBeat and game.prevGlobalBeat < self.startBeat then
+    self.audioSource:play()
+  end
 end
 
 function NoteGroup:draw()
