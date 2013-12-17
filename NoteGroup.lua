@@ -32,13 +32,14 @@ function NoteGroup:init(filename, startBeat, player)
   local pattern = loadTable(readAll(patternPath))
   self.pattern = pattern.notes
   self.startBeat = startBeat
+  self.spawnDistance = 600
 end
 
 function NoteGroup:spawnNote(noteSpecs)
-  spawnPoint = vector(300, 0):rotated(noteSpecs.angle)
+  spawnPoint = vector(self.spawnDistance, 0):rotated(noteSpecs.angle)
   spawnPoint = spawnPoint + self.player.pos
   local radius = 5
-  self.balls[#self.balls + 1] = Ball(self.player, spawnPoint, 400, noteSpecs.beat, radius)
+  self.balls[#self.balls + 1] = Ball(self.player, spawnPoint, noteSpecs)
 end
 
 function NoteGroup:update(dt)
@@ -64,8 +65,8 @@ function NoteGroup:update(dt)
   end
 
   -- Spawn balls
-  local offset = 2 * ((300 - self.player.radius) / 400)
   for __, note in ipairs(self.pattern) do
+    local offset = 2 * ((self.spawnDistance - self.player.radius) / note.speed)
     local nb = note.beat + self.startBeat - 1
     if nb < game.globalBeat + offset and nb > game.prevGlobalBeat + offset then
       self:spawnNote(note)
