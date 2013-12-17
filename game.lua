@@ -32,7 +32,6 @@ function game:update(dt)
   local currentBeat = currentSample / self.samplesPerBeat
   self.globalBeat = currentBeat + 16 * (self.trackRepititions - 1)
   if currentBeat > 16 then
-    print("rewinding")
     self.trackRepititions = self.trackRepititions + 1
     self.tracks[self.trackRepititions % 2 + 1]:play()
   end
