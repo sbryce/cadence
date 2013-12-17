@@ -7,7 +7,7 @@ function Player:init(pos)
   self.pos = pos
   self.startAngle = 1
   self.radius = 50
-  self.angle = 0.25 * math.pi
+  self.angle = 0.35 * math.pi
   self.angularVelocity = 8
 end
 
