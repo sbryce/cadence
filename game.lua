@@ -9,7 +9,9 @@ game = {}
 
 function game:enter()
   player = Player(vector(400, 300))
-  noteGroup = NoteGroup("fifths", 16, player)
+  self.noteGroups = {}
+  table.insert(self.noteGroups, NoteGroup("fifths", 16, player))
+  table.insert(self.noteGroups, NoteGroup("fifths", 32, player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "singleString" .. ".mp3"
   self.tracks = {}
@@ -35,12 +37,16 @@ function game:update(dt)
     self.trackRepititions = self.trackRepititions + 1
     self.tracks[self.trackRepititions % 2 + 1]:play()
   end
-  noteGroup:update(dt)
+  for _, ng in ipairs(self.noteGroups) do
+    ng:update(dt)
+  end
   Timer.update(dt)
   self.prevGlobalBeat = self.globalBeat
 end
 
 function game:draw()
   player:draw()
-  noteGroup:draw()
+  for _, ng in ipairs(self.noteGroups) do
+    ng:draw()
+  end
 end
