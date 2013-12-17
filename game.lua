@@ -11,7 +11,7 @@ function game:enter()
   player = Player(vector(400, 300))
   self.noteGroups = {}
   table.insert(self.noteGroups, NoteGroup("fifths", 16, player))
-  table.insert(self.noteGroups, NoteGroup("fifths", 32, player))
+  table.insert(self.noteGroups, NoteGroup("pianoArpMel1", 32, player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "singleString" .. ".mp3"
   self.tracks = {}
