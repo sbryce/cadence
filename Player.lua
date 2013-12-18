@@ -5,6 +5,7 @@ Player = newclass("Player")
 
 function Player:init(pos)
   self.pos = pos
+  self.ballPos = pos:clone()
   self.startAngle = 1
   self.shieldRadius = 50
   self.radius = 10
@@ -12,6 +13,9 @@ function Player:init(pos)
   self.angularVelocity = 8
   self.targetAngle = self.angle
   self.wasHit = false
+  self.dy = 0
+  self.ddy = 1
+  self.wasSpaceDown = false
 end
 
 function Player:update(dt)
@@ -33,16 +37,34 @@ function Player:update(dt)
     end
   end
 
-  if self.wasHit then
-    self.radius = 10
+  if self.ballPos.y > 300 then
+    self.ddy = 0
+    self.dy = 0
+    self.ballPos.y = 300
+  else
+    self.ddy = 1
   end
+
+  if love.keyboard.isDown(" ") then
+    if self.ballPos.y >= 300 and not self.wasSpaceDown then
+      self.dy = -8
+    end
+    self.wasSpaceDown = true
+  else
+    self.wasSpaceDown = false
+  end
+
+  -- Kinematics
+  self.dy = self.dy + self.ddy
+  self.ballPos.y = self.ballPos.y + self.dy
+
 end
 
 function Player:draw()
   love.graphics.setColor(71, 71, 82)
   love.graphics.arc("fill", self.pos.x, self.pos.y, self.shieldRadius, self.startAngle, self.startAngle + self.angle)
   love.graphics.setColor(91, 91, 82)
-  love.graphics.circle("fill", self.pos.x, self.pos.y, self.radius, 50)
+  love.graphics.circle("fill", self.pos.x, self.ballPos.y, self.radius, 50)
 end
 
 function Player:isBlocked(vec)
