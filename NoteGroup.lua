@@ -36,10 +36,11 @@ function NoteGroup:init(filename, startBeat, player)
   self.startBeat = startBeat
   self.spawnDistance = 600
   self.started = false
+  self.angularOffset = math.random(0, 2 * 3.14)
 end
 
 function NoteGroup:spawnNote(noteSpecs)
-  spawnPoint = vector(self.spawnDistance, 0):rotated(noteSpecs.angle)
+  spawnPoint = vector(self.spawnDistance, 0):rotated(noteSpecs.angle + self.angularOffset)
   spawnPoint = spawnPoint + self.player.pos
   local radius = 5
   self.balls[#self.balls + 1] = Ball(self.player, spawnPoint, noteSpecs)
