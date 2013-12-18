@@ -6,10 +6,12 @@ Player = newclass("Player")
 function Player:init(pos)
   self.pos = pos
   self.startAngle = 1
-  self.radius = 50
+  self.shieldRadius = 50
+  self.radius = 10
   self.angle = 0.35 * math.pi
   self.angularVelocity = 8
   self.targetAngle = self.angle
+  self.wasHit = false
 end
 
 function Player:update(dt)
@@ -30,11 +32,17 @@ function Player:update(dt)
       self.angle = self.angle + shieldMutability * dt
     end
   end
+
+  if self.wasHit then
+    self.radius = 10
+  end
 end
 
 function Player:draw()
   love.graphics.setColor(71, 71, 82)
-  love.graphics.arc("line", self.pos.x, self.pos.y, self.radius, self.startAngle, self.startAngle + self.angle)
+  love.graphics.arc("fill", self.pos.x, self.pos.y, self.shieldRadius, self.startAngle, self.startAngle + self.angle)
+  love.graphics.setColor(91, 91, 82)
+  love.graphics.circle("fill", self.pos.x, self.pos.y, self.radius, 50)
 end
 
 function Player:isBlocked(vec)

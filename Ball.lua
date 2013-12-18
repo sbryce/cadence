@@ -1,5 +1,6 @@
 require 'class'
 vector = require 'hump.vector'
+require 'gameOver'
 
 Ball = newclass("Ball")
 
@@ -21,12 +22,16 @@ function Ball:update(dt)
   self.pos = self.pos + self.vel * dir * dt
   local distFromCenter = math.abs(self.player.pos:dist(self.pos))
   local prevDistFromCenter = math.abs(self.player.pos:dist(self.prevPos))
-  if prevDistFromCenter > self.player.radius and distFromCenter < self.player.radius then
+  if prevDistFromCenter > self.player.shieldRadius and distFromCenter < self.player.shieldRadius then
     if self.player:isBlocked(self.pos) then
       self.active = false
+      --self.player.radius = self.player.shieldRadius * 0.8 * (self.beat / 16)
     else
       self.willHit = true
     end
+  end
+  if distFromCenter < self.player.radius then
+    Gamestate.switch(gameOver)
   end
   self.prevPos = self.pos
 end

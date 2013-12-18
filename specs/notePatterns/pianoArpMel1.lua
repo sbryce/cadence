@@ -1,4 +1,4 @@
-params = {shieldRad = 1}
+params = {shieldRad = 1, duration = 16}
 notes = {
   {beat = 1, angle = 0, speed = 300, radius = 5},
   {beat = 1.5, angle = 0.5, speed = 300, radius = 5},

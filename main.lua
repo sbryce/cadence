@@ -9,6 +9,8 @@ function love:load()
 end
 
 function menu:draw()
+  love.graphics.setBackgroundColor(0, 0, 0)
+  love.graphics.setColor(255, 255, 255)
   love.graphics.print("Press space to continue", 10, 10)
 end
 

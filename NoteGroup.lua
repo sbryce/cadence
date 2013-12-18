@@ -35,6 +35,7 @@ function NoteGroup:init(filename, startBeat, player)
   self.player.angle = pattern.params.shieldRad
   self.startBeat = startBeat
   self.spawnDistance = 600
+  self.started = false
 end
 
 function NoteGroup:spawnNote(noteSpecs)
@@ -45,7 +46,6 @@ function NoteGroup:spawnNote(noteSpecs)
 end
 
 function NoteGroup:update(dt)
-
   -- Update all the balls
   for i, ball in ipairs(self.balls) do
     ball:update(dt)
@@ -56,7 +56,7 @@ function NoteGroup:update(dt)
 
   -- Spawn balls
   for i, note in ipairs(self.pattern) do
-    local offset = 2 * ((self.spawnDistance - self.player.radius) / note.speed)
+    local offset = 2 * ((self.spawnDistance - self.player.shieldRadius) / note.speed)
     local nb = note.beat + self.startBeat - 1
     if nb < game.globalBeat + offset and nb > game.prevGlobalBeat + offset then
       self:spawnNote(note)
@@ -70,6 +70,7 @@ function NoteGroup:update(dt)
   -- Things to do when first beat hits
   if game.globalBeat > self.startBeat and game.prevGlobalBeat < self.startBeat then
     self.audioSource:play()
+    self.started = true
   end
 end
 
