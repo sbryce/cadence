@@ -3,15 +3,16 @@ vector = require 'hump.vector'
 Timer = require 'hump.timer'
 require 'Player'
 require 'NoteGroup'
+require 'Floor'
 
 game = {}
 
 
 function game:enter()
-  player = Player(vector(400, 300))
+  self.player = Player(vector(400, 300))
   self.noteGroups = {}
-  table.insert(self.noteGroups, NoteGroup("fifths", 16, player))
-  table.insert(self.noteGroups, NoteGroup("pianoArpMel1", 32, player))
+  table.insert(self.noteGroups, NoteGroup("fifths", 16, self.player))
+  table.insert(self.noteGroups, NoteGroup("pianoArpMel1", 32, self.player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "singleString" .. ".mp3"
   self.tracks = {}
@@ -26,10 +27,11 @@ function game:enter()
   self.trackRepititions = 1
   self.globalBeat = 0
   self.prevGlobalBeat = 0
+  self.floor = Floor()
 end
 
 function game:update(dt)
-  player:update(dt)
+  self.player:update(dt)
   local currentSample = self.tracks[self.trackRepititions % 2 + 1]:tell("samples")
   local currentBeat = currentSample / self.samplesPerBeat
   self.globalBeat = currentBeat + 16 * (self.trackRepititions - 1)
@@ -45,7 +47,8 @@ function game:update(dt)
 end
 
 function game:draw()
-  player:draw()
+  self.floor:draw()
+  self.player:draw()
   for _, ng in ipairs(self.noteGroups) do
     ng:draw()
   end
