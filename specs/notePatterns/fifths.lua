@@ -18,8 +18,20 @@ notes = {
   {beat = 16, angle = 3, speed = 300, radius = 8}
 }
 bumps = {
-  {beat = 1, width = 20, speed = 300},
-  {beat = 5, width = 20, speed = 300},
-  {beat = 9, width = 20, speed = 300},
-  {beat = 13, width = 20, speed = 300},
+  {beat = 1, width = 20, speed = 500},
+  {beat = 2, width = 20, speed = 500},
+  {beat = 3, width = 20, speed = 500},
+  {beat = 4, width = 20, speed = 500},
+  {beat = 5, width = 20, speed = 500},
+  {beat = 6, width = 20, speed = 500},
+  {beat = 7, width = 20, speed = 500},
+  {beat = 8, width = 20, speed = 500},
+  {beat = 9, width = 20, speed = 500},
+  {beat = 10, width = 20, speed = 500},
+  {beat = 11, width = 20, speed = 500},
+  {beat = 12, width = 20, speed = 500},
+  {beat = 13, width = 20, speed = 500},
+  {beat = 14, width = 20, speed = 500},
+  {beat = 15, width = 20, speed = 500},
+  {beat = 16, width = 20, speed = 500},
 }
