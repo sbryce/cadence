@@ -1,5 +1,6 @@
 require 'class'
 require 'Ball'
+require 'Obstacle'
 require 'specs'
 vector = require 'hump.vector'
 Timer = require 'hump.timer'
@@ -25,14 +26,16 @@ end
 -- because bpm is the standard measure of tempo in the music world
 function NoteGroup:init(filename, startBeat, player)
   self.balls = {}
+  self.obstacles = {}
   self.player = player
   local filepath = filepaths.musicPath .. filename .. ".mp3"
   self.audioSource = love.audio.newSource(filepath)
   local patternPath = filepaths.notePatternsPath .. filename .. ".lua"
   local pattern = loadTable(readAll(patternPath))
   self.pattern = pattern.notes
+  self.bumps = pattern.bumps
   self.params = pattern.params
-  self.player.angle = pattern.params.shieldRad
+  --self.player.angle = pattern.params.shieldRad
   self.startBeat = startBeat
   self.spawnDistance = 600
   self.started = false
@@ -46,6 +49,10 @@ function NoteGroup:spawnNote(noteSpecs)
   self.balls[#self.balls + 1] = Ball(self.player, spawnPoint, noteSpecs)
 end
 
+function NoteGroup:spawnBump(bumpSpecs)
+  self.obstacles[#self.obstacles + 1] = Obstacle(self.spawnDistance + self.player.pos.x, bumpSpecs.width, bumpSpecs.speed, self.player)
+end
+
 function NoteGroup:update(dt)
   -- Update all the balls
   for i, ball in ipairs(self.balls) do
@@ -53,6 +60,11 @@ function NoteGroup:update(dt)
     if not ball.active then
       table.remove(self.balls, i)
     end
+  end
+
+  -- Update all the bumps
+  for i, obstacle in ipairs(self.obstacles) do
+    obstacle:update(dt)
   end
 
   -- Spawn balls
@@ -68,6 +80,15 @@ function NoteGroup:update(dt)
     end
   end
 
+  -- Spawn bumps
+  for i, bump in ipairs(self.bumps) do
+    local offset = 2 * (self.spawnDistance / bump.speed)
+    local bb = bump.beat + self.startBeat - 1
+    if bb < game.globalBeat + offset and bb > game.prevGlobalBeat + offset then
+      self:spawnBump(bump)
+    end
+  end
+
   -- Things to do when first beat hits
   if game.globalBeat > self.startBeat and game.prevGlobalBeat < self.startBeat then
     self.audioSource:play()
@@ -76,6 +97,9 @@ function NoteGroup:update(dt)
 end
 
 function NoteGroup:draw()
+  for i, obst in ipairs(self.obstacles) do
+    obst:draw()
+  end
   for i, ball in ipairs(self.balls) do
     ball:draw()
   end
