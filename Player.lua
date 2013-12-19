@@ -7,7 +7,7 @@ function Player:init(pos)
   self.pos = pos
   self.ballPos = pos:clone()
   self.startAngle = 1
-  self.shieldRadius = 50
+  self.shieldRadius = 80
   self.radius = 10
   self.angle = 0.35 * math.pi
   self.angularVelocity = 8
@@ -47,7 +47,7 @@ function Player:update(dt)
 
   if love.keyboard.isDown(" ") then
     if self.ballPos.y >= 300 and not self.wasSpaceDown then
-      self.dy = -8
+      self.dy = -11
     end
     self.wasSpaceDown = true
   else
