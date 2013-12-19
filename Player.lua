@@ -14,7 +14,7 @@ function Player:init(pos)
   self.targetAngle = self.angle
   self.wasHit = false
   self.dy = 0
-  self.ddy = 1
+  self.ddy = 0
   self.wasSpaceDown = false
 end
 
@@ -42,12 +42,12 @@ function Player:update(dt)
     self.dy = 0
     self.ballPos.y = 300
   else
-    self.ddy = 1
+    self.ddy = 3000
   end
 
   if love.keyboard.isDown(" ") then
     if self.ballPos.y >= 300 and not self.wasSpaceDown then
-      self.dy = -11
+      self.dy = -500
     end
     self.wasSpaceDown = true
   else
@@ -55,8 +55,8 @@ function Player:update(dt)
   end
 
   -- Kinematics
-  self.dy = self.dy + self.ddy
-  self.ballPos.y = self.ballPos.y + self.dy
+  self.dy = self.dy + self.ddy * dt
+  self.ballPos.y = self.ballPos.y + self.dy * dt
 
 end
 
