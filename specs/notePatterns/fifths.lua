@@ -17,3 +17,9 @@ notes = {
   {beat = 15, angle = 2, speed = 300, radius = 8},
   {beat = 16, angle = 3, speed = 300, radius = 8}
 }
+bumps = {
+  {beat = 1, width = 20, speed = 300},
+  {beat = 5, width = 20, speed = 300},
+  {beat = 9, width = 20, speed = 300},
+  {beat = 13, width = 20, speed = 300},
+}
