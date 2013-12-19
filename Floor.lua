@@ -3,8 +3,13 @@ require 'Obstacle'
 
 Floor = newclass("Floor")
 
-function Floor:init()
-  self.obst = Obstacle()
+function Floor:init(player)
+  self.obst = Obstacle(player)
+  self.player = player
+end
+
+function Floor:update(dt)
+  self.obst:update(dt)
 end
 
 function Floor:draw()
