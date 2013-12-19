@@ -82,7 +82,7 @@ function NoteGroup:update(dt)
 
   -- Spawn bumps
   for i, bump in ipairs(self.bumps) do
-    local offset = 2 * (self.spawnDistance / bump.speed)
+    local offset = 2 * ((self.spawnDistance - 50) / bump.speed)
     local bb = bump.beat + self.startBeat - 1
     if bb < game.globalBeat + offset and bb > game.prevGlobalBeat + offset then
       self:spawnBump(bump)
