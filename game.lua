@@ -27,11 +27,12 @@ function game:enter()
   self.trackRepititions = 1
   self.globalBeat = 0
   self.prevGlobalBeat = 0
-  self.floor = Floor()
+  self.floor = Floor(self.player)
 end
 
 function game:update(dt)
   self.player:update(dt)
+  self.floor:update(dt)
   local currentSample = self.tracks[self.trackRepititions % 2 + 1]:tell("samples")
   local currentBeat = currentSample / self.samplesPerBeat
   self.globalBeat = currentBeat + 16 * (self.trackRepititions - 1)
