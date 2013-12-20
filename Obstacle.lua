@@ -15,8 +15,7 @@ end
 function Obstacle:update(dt)
   self.pos.x = self.pos.x + self.vel * dt
   if circleRecCollision(self.player.ballPos, self.player.radius, self.pos, self.width, self.height) then
-    love.audio.stop()
-    Gamestate.switch(gameOver)
+    self.player:takeDamage()
   end
 end
 

@@ -13,6 +13,7 @@ function game:enter()
   self.noteGroups = {}
   table.insert(self.noteGroups, NoteGroup("fifths", 16, self.player))
   table.insert(self.noteGroups, NoteGroup("pianoArpMel1", 32, self.player))
+  table.insert(self.noteGroups, NoteGroup("pianoArpMel2", 48, self.player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "singleString" .. ".mp3"
   self.tracks = {}

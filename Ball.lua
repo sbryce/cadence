@@ -31,7 +31,8 @@ function Ball:update(dt)
     end
   end
   if distFromCenter < self.player.radius then
-    Gamestate.switch(gameOver)
+    self.player:takeDamage()
+    self.active = false
   end
   self.prevPos = self.pos
 end

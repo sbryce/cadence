@@ -1,5 +1,6 @@
 require 'class'
 vector = require 'hump.vector'
+GameState = require 'hump.gamestate'
 
 Player = newclass("Player")
 
@@ -8,7 +9,7 @@ function Player:init(pos)
   self.ballPos = pos:clone()
   self.startAngle = 1
   self.shieldRadius = 80
-  self.radius = 10
+  self.radius = 20
   self.angle = 0.35 * math.pi
   self.angularVelocity = 8
   self.targetAngle = self.angle
@@ -16,6 +17,15 @@ function Player:init(pos)
   self.dy = 0
   self.ddy = 0
   self.wasSpaceDown = false
+  self.health = 4
+end
+
+function Player:takeDamage()
+  if self.health == 0 then
+    GameState.switch(gameOver)
+  end
+  self.radius = self.radius - 3
+  self.health = self.health - 1
 end
 
 function Player:update(dt)
