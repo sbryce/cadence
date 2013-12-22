@@ -23,6 +23,15 @@ function Player:init(pos)
   self.ballColor = {91, 91, 82}
 end
 
+function Player:pulseUp()
+  Timer.tween(0.1, self, {radius = self.radius + 10})
+  Timer.add(0.1, function() self:pulseDown() end)
+end
+
+function Player:pulseDown()
+  Timer.tween(0.4, self, {radius = self.radius - 10})
+end
+
 function Player:takeDamage()
   if self.health == 0 then
     GameState.switch(gameOver)
@@ -32,6 +41,12 @@ function Player:takeDamage()
   self.shieldColor = {255, 255, 255}
   self.ballColor = {255, 255, 255}
   Timer.add(0.2, function() self:resetColors() end)
+end
+
+function Player:blockBall()
+  --self.shieldRadius = self.shieldRadius - 10
+  --Timer.add(0.1, function() self.shieldRadius = self.shieldRadius + 10 end)
+  --Timer.tween(0.2, self, {shieldRadius = self.shieldRadius - 10}) 
 end
 
 function Player:resetColors()
@@ -75,15 +90,16 @@ function Player:update(dt)
     self.wasSpaceDown = false
   end
 
+  if math.floor(game.globalBeat) > math.floor(game.prevGlobalBeat) then
+    self:pulseUp()
+  end
+
   -- Kinematics
   self.dy = self.dy + self.ddy * dt
   self.ballPos.y = self.ballPos.y + self.dy * dt
-
 end
 
 function Player:draw()
-  --love.graphics.setColor(self.shieldColor)
-  --love.graphics.arc("fill", self.pos.x, self.pos.y, self.shieldRadius, self.startAngle, self.startAngle + self.angle)
   self:drawShield()
   love.graphics.setColor(self.ballColor)
   love.graphics.circle("fill", self.pos.x, self.ballPos.y, self.radius, 50)

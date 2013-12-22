@@ -25,7 +25,7 @@ function Ball:update(dt)
   if prevDistFromCenter > self.player.shieldRadius and distFromCenter < self.player.shieldRadius then
     if self.player:isBlocked(self.pos) then
       self.active = false
-      --self.player.radius = self.player.shieldRadius * 0.8 * (self.beat / 16)
+      self.player:blockBall()
     else
       self.willHit = true
     end

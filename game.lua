@@ -34,8 +34,6 @@ function game:enter()
 end
 
 function game:update(dt)
-  self.player:update(dt)
-  self.floor:update(dt)
   local currentSample = self.tracks[self.trackRepititions % 2 + 1]:tell("samples")
   local currentBeat = currentSample / self.samplesPerBeat
   self.globalBeat = currentBeat + 16 * (self.trackRepititions - 1)
@@ -43,6 +41,8 @@ function game:update(dt)
     self.trackRepititions = self.trackRepititions + 1
     self.tracks[self.trackRepititions % 2 + 1]:play()
   end
+  self.player:update(dt)
+  self.floor:update(dt)
   for _, ng in ipairs(self.noteGroups) do
     ng:update(dt)
   end
