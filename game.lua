@@ -5,6 +5,7 @@ require 'Player'
 require 'NoteGroup'
 require 'Floor'
 require 'Sky'
+require 'Visualizer'
 
 game = {}
 
@@ -32,6 +33,10 @@ function game:enter()
   self.floor = Floor(self.player)
   self.sky = Sky()
   self.effects = {}
+  self.visualizers = {}
+  table.insert(self.visualizers, Visualizer(500, 100, 50))
+  table.insert(self.visualizers, Visualizer(550, 200, 200))
+  table.insert(self.visualizers, Visualizer(600, 255, 500))
 end
 
 function game:update(dt)
@@ -50,12 +55,18 @@ function game:update(dt)
   for _, fx in ipairs(self.effects) do
     fx:update(dt)
   end
+  for _, v in ipairs(self.visualizers) do
+    v:update(dt)
+  end
   Timer.update(dt)
   self.prevGlobalBeat = self.globalBeat
 end
 
 function game:draw()
   self.sky:draw()
+  for _, v in ipairs(self.visualizers) do
+    v:draw()
+  end
   self.floor:draw()
   self.player:draw()
   for _, ng in ipairs(self.noteGroups) do
