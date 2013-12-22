@@ -46,9 +46,7 @@ function Player:takeDamage()
 end
 
 function Player:blockBall()
-  --self.shieldRadius = self.shieldRadius - 10
-  --Timer.add(0.1, function() self.shieldRadius = self.shieldRadius + 10 end)
-  --Timer.tween(0.2, self, {shieldRadius = self.shieldRadius - 10}) 
+  
 end
 
 function Player:resetColors()
@@ -92,10 +90,8 @@ function Player:update(dt)
     self.wasSpaceDown = false
   end
 
-  --if math.floor(game.globalBeat) > math.floor(game.prevGlobalBeat) then
   pulse(self, "radius", 10, 0.02, 0.4)
   pulse(self, "shieldDrawRadius", 10, 0.02, 0.4)
-  --end
 
   -- Kinematics
   self.dy = self.dy + self.ddy * dt

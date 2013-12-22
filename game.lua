@@ -31,6 +31,7 @@ function game:enter()
   self.prevGlobalBeat = 0
   self.floor = Floor(self.player)
   self.sky = Sky()
+  self.effects = {}
 end
 
 function game:update(dt)
@@ -46,6 +47,9 @@ function game:update(dt)
   for _, ng in ipairs(self.noteGroups) do
     ng:update(dt)
   end
+  for _, fx in ipairs(self.effects) do
+    fx:update(dt)
+  end
   Timer.update(dt)
   self.prevGlobalBeat = self.globalBeat
 end
@@ -56,5 +60,8 @@ function game:draw()
   self.player:draw()
   for _, ng in ipairs(self.noteGroups) do
     ng:draw()
+  end
+  for _, fx in ipairs(self.effects) do
+    fx:draw()
   end
 end

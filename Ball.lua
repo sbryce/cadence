@@ -2,6 +2,7 @@ require 'class'
 vector = require 'hump.vector'
 require 'gameOver'
 require 'Player'
+require 'CollisionEffect'
 
 Ball = newclass("Ball")
 
@@ -28,6 +29,7 @@ function Ball:update(dt)
   if prevDistFromCenter > self.player.shieldRadius and distFromCenter < self.player.shieldRadius then
     if self.player:isBlocked(self.pos) then
       self.active = false
+      table.insert(game.effects, CollisionEffect(self.prevPos))
       self.player:blockBall()
     else
       self.willHit = true
