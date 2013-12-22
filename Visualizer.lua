@@ -7,7 +7,7 @@ function Visualizer:init(top, opacity, speed, width)
   self.x = 0
   self.width = width
   self.height = 400
-  self.pulseDelta = 50
+  self.pulseDelta = 20
   self.top = top
   self.opacity = opacity
   self.seed = math.random(1, 200)

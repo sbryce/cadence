@@ -2,6 +2,7 @@ require 'class'
 vector = require 'hump.vector'
 GameState = require 'hump.gamestate'
 Timer = require 'hump.timer'
+require 'CollisionEffect'
 
 Player = newclass("Player")
 
@@ -40,7 +41,6 @@ function Player:takeDamage()
   if self.health == 0 then
     GameState.switch(gameOver)
   end
-  --self.radius = self.radius - 3
   self.shieldColor = {255, 255, 255}
   self.ballColor = {255, 255, 255}
   Timer.add(0.2, function() self:resetColors() end)
@@ -85,6 +85,7 @@ function Player:update(dt)
   if love.keyboard.isDown(" ") then
     if self.ballPos.y >= 300 and not self.wasSpaceDown then
       self.dy = -500
+      table.insert(game.effects, CollisionEffect(vector(self.ballPos.x, 300)))
     end
     self.wasSpaceDown = true
   else

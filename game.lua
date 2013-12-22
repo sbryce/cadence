@@ -36,7 +36,7 @@ function game:enter()
   self.visualizers = {}
   table.insert(self.visualizers, Visualizer(550, 255, 50, 30))
   table.insert(self.visualizers, Visualizer(600, 255, 400, 60))
-  --table.insert(self.visualizers, Visualizer(600, 255, 800, 80))
+  --self.frontVis = Visualizer(780, 255, 2000, 100)
 end
 
 function game:update(dt)
@@ -58,6 +58,7 @@ function game:update(dt)
   for _, v in ipairs(self.visualizers) do
     v:update(dt)
   end
+  --self.frontVis:update(dt)
   Timer.update(dt)
   self.prevGlobalBeat = self.globalBeat
 end
@@ -70,6 +71,7 @@ function game:draw()
   end
   self.floor:draw()
   self.player:draw()
+  --self.frontVis:draw()
   for _, ng in ipairs(self.noteGroups) do
     ng:draw()
   end
