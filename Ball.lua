@@ -1,6 +1,7 @@
 require 'class'
 vector = require 'hump.vector'
 require 'gameOver'
+require 'Player'
 
 Ball = newclass("Ball")
 
@@ -13,6 +14,8 @@ function Ball:init(player, pos, noteSpecs)
   self.collisionTime = collisionTime
   self.beat = noteSpecs.beat
   self.radius = noteSpecs.radius
+  self.drawRadius = noteSpecs.radius
+  self.pulseDelta = self.drawRadius * 0.5
   self.willHit = false
 end
 
@@ -34,10 +37,11 @@ function Ball:update(dt)
     self.player:takeDamage()
     self.active = false
   end
+  pulse(self, "drawRadius", self.pulseDelta, 0.02, 0.4)
   self.prevPos = self.pos
 end
 
 function Ball:draw()
   love.graphics.setColor(71, 71, 82)
-  love.graphics.circle("fill", self.pos.x, self.pos.y, self.radius, 20)
+  love.graphics.circle("fill", self.pos.x, self.pos.y, self.drawRadius, 20)
 end

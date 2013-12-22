@@ -21,15 +21,17 @@ function Player:init(pos)
   self.health = 4
   self.shieldColor = {71, 71, 82}
   self.ballColor = {91, 91, 82}
+  self.shieldDrawRadius = self.shieldRadius
 end
 
-function Player:pulseUp()
-  Timer.tween(0.1, self, {radius = self.radius + 10})
-  Timer.add(0.1, function() self:pulseDown() end)
+function pulse(obj, attr, delta, uptime, downtime)
+  if math.floor(game.globalBeat) > math.floor(game.prevGlobalBeat) then
+    Timer.tween(uptime, obj, {[attr] = obj[attr] + delta}, 'linear', function() pulseDown(obj, attr, delta, downtime) end)
+  end
 end
 
-function Player:pulseDown()
-  Timer.tween(0.4, self, {radius = self.radius - 10})
+function pulseDown(obj, attr, delta, downtime)
+  Timer.tween(downtime, obj, {[attr] = obj[attr] - delta}, 'bounce')
 end
 
 function Player:takeDamage()
@@ -90,9 +92,10 @@ function Player:update(dt)
     self.wasSpaceDown = false
   end
 
-  if math.floor(game.globalBeat) > math.floor(game.prevGlobalBeat) then
-    self:pulseUp()
-  end
+  --if math.floor(game.globalBeat) > math.floor(game.prevGlobalBeat) then
+  pulse(self, "radius", 10, 0.02, 0.4)
+  pulse(self, "shieldDrawRadius", 10, 0.02, 0.4)
+  --end
 
   -- Kinematics
   self.dy = self.dy + self.ddy * dt
@@ -135,8 +138,8 @@ function Player:drawShield()
   love.graphics.setLine(7, "smooth")
   local res = 10
   for i = 0, res - 1 do
-    local vec1 = vector(self.shieldRadius, 0):rotated(self.startAngle + i * (self.angle / res)) + self.pos
-    local vec2 = vector(self.shieldRadius, 0):rotated(self.startAngle + (i + 1) * (self.angle / res)) + self.pos
+    local vec1 = vector(self.shieldDrawRadius, 0):rotated(self.startAngle + i * (self.angle / res)) + self.pos
+    local vec2 = vector(self.shieldDrawRadius, 0):rotated(self.startAngle + (i + 1) * (self.angle / res)) + self.pos
     love.graphics.line(vec1.x, vec1.y, vec2.x, vec2.y)
   end
 end
