@@ -4,6 +4,7 @@ Timer = require 'hump.timer'
 require 'Player'
 require 'NoteGroup'
 require 'Floor'
+require 'Sky'
 
 game = {}
 
@@ -29,6 +30,7 @@ function game:enter()
   self.globalBeat = 0
   self.prevGlobalBeat = 0
   self.floor = Floor(self.player)
+  self.sky = Sky()
 end
 
 function game:update(dt)
@@ -49,6 +51,7 @@ function game:update(dt)
 end
 
 function game:draw()
+  self.sky:draw()
   self.floor:draw()
   self.player:draw()
   for _, ng in ipairs(self.noteGroups) do
