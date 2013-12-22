@@ -82,8 +82,9 @@ function Player:update(dt)
 end
 
 function Player:draw()
-  love.graphics.setColor(self.shieldColor)
-  love.graphics.arc("fill", self.pos.x, self.pos.y, self.shieldRadius, self.startAngle, self.startAngle + self.angle)
+  --love.graphics.setColor(self.shieldColor)
+  --love.graphics.arc("fill", self.pos.x, self.pos.y, self.shieldRadius, self.startAngle, self.startAngle + self.angle)
+  self:drawShield()
   love.graphics.setColor(self.ballColor)
   love.graphics.circle("fill", self.pos.x, self.ballPos.y, self.radius, 50)
 end
@@ -111,4 +112,15 @@ end
 
 function Player:setShieldWidth(width)
   self.targetAngle = width
+end
+
+function Player:drawShield()
+  love.graphics.setColor(self.shieldColor)
+  love.graphics.setLine(7, "smooth")
+  local res = 10
+  for i = 0, res - 1 do
+    local vec1 = vector(self.shieldRadius, 0):rotated(self.startAngle + i * (self.angle / res)) + self.pos
+    local vec2 = vector(self.shieldRadius, 0):rotated(self.startAngle + (i + 1) * (self.angle / res)) + self.pos
+    love.graphics.line(vec1.x, vec1.y, vec2.x, vec2.y)
+  end
 end
