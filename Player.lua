@@ -1,6 +1,7 @@
 require 'class'
 vector = require 'hump.vector'
 GameState = require 'hump.gamestate'
+Timer = require 'hump.timer'
 
 Player = newclass("Player")
 
@@ -18,6 +19,8 @@ function Player:init(pos)
   self.ddy = 0
   self.wasSpaceDown = false
   self.health = 4
+  self.shieldColor = {71, 71, 82}
+  self.ballColor = {91, 91, 82}
 end
 
 function Player:takeDamage()
@@ -26,6 +29,14 @@ function Player:takeDamage()
   end
   self.radius = self.radius - 3
   self.health = self.health - 1
+  self.shieldColor = {255, 255, 255}
+  self.ballColor = {255, 255, 255}
+  Timer.add(0.2, function() self:resetColors() end)
+end
+
+function Player:resetColors()
+  self.shieldColor = {71, 71, 82}
+  self.ballColor = {91, 91, 82}
 end
 
 function Player:update(dt)
@@ -71,9 +82,9 @@ function Player:update(dt)
 end
 
 function Player:draw()
-  love.graphics.setColor(71, 71, 82)
+  love.graphics.setColor(self.shieldColor)
   love.graphics.arc("fill", self.pos.x, self.pos.y, self.shieldRadius, self.startAngle, self.startAngle + self.angle)
-  love.graphics.setColor(91, 91, 82)
+  love.graphics.setColor(self.ballColor)
   love.graphics.circle("fill", self.pos.x, self.ballPos.y, self.radius, 50)
 end
 
