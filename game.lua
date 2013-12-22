@@ -34,9 +34,9 @@ function game:enter()
   self.sky = Sky()
   self.effects = {}
   self.visualizers = {}
-  table.insert(self.visualizers, Visualizer(500, 100, 50))
-  table.insert(self.visualizers, Visualizer(550, 200, 200))
-  table.insert(self.visualizers, Visualizer(600, 255, 500))
+  table.insert(self.visualizers, Visualizer(550, 255, 50, 30))
+  table.insert(self.visualizers, Visualizer(600, 255, 400, 60))
+  --table.insert(self.visualizers, Visualizer(600, 255, 800, 80))
 end
 
 function game:update(dt)
@@ -63,8 +63,9 @@ function game:update(dt)
 end
 
 function game:draw()
-  self.sky:draw()
+  --self.sky:draw()
   for _, v in ipairs(self.visualizers) do
+    self.sky:draw(100)
     v:draw()
   end
   self.floor:draw()

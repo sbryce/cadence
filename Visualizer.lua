@@ -3,9 +3,9 @@ require 'Player'
 
 Visualizer = newclass("Visualizer")
 
-function Visualizer:init(top, opacity, speed)
+function Visualizer:init(top, opacity, speed, width)
   self.x = 0
-  self.width = 50
+  self.width = width
   self.height = 400
   self.pulseDelta = 50
   self.top = top
@@ -22,7 +22,7 @@ end
 
 function Visualizer:draw()
   math.randomseed(self.seed)
-  for i = 0, 20 do
+  for i = 0, 40 do
     love.graphics.setColor(236 + math.random(-5, 5), 216 + math.random(-5, 5), 217 + math.random(-5, 5), self.opacity)
     love.graphics.rectangle("fill", self.x + i * self.width + (self.offset % (20 * self.width)), self.top - self.height + math.random(100), self.width, self.height)
     love.graphics.rectangle("fill", self.x + i * self.width + (self.offset % (20 * self.width)) - (20 * self.width), self.top - self.height + math.random(100), self.width, self.height)
