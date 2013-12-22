@@ -20,5 +20,7 @@ function Obstacle:update(dt)
 end
 
 function Obstacle:draw()
-  love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.width, self.height)
+  love.graphics.setColor(137, 118, 184)
+  --love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.width, self.height)
+  love.graphics.triangle("fill", self.pos.x, self.pos.y + self.height, self.pos.x + self.width / 2, self.pos.y, self.pos.x + self.width, self.pos.y + self.height)
 end

@@ -10,7 +10,7 @@ function Player:init(pos)
   self.ballPos = pos:clone()
   self.startAngle = 1
   self.shieldRadius = 80
-  self.radius = 20
+  self.radius = 4
   self.angle = 0.35 * math.pi
   self.angularVelocity = 8
   self.targetAngle = self.angle
@@ -19,8 +19,9 @@ function Player:init(pos)
   self.ddy = 0
   self.wasSpaceDown = false
   self.health = 4
-  self.shieldColor = {71, 71, 82}
-  self.ballColor = {91, 91, 82}
+  self.origColor = {208, 165, 195}
+  self.shieldColor = self.origColor
+  self.ballColor = self.origColor
   self.shieldDrawRadius = self.shieldRadius
 end
 
@@ -35,11 +36,11 @@ function pulseDown(obj, attr, delta, downtime)
 end
 
 function Player:takeDamage()
+  self.health = self.health - 1
   if self.health == 0 then
     GameState.switch(gameOver)
   end
-  self.radius = self.radius - 3
-  self.health = self.health - 1
+  --self.radius = self.radius - 3
   self.shieldColor = {255, 255, 255}
   self.ballColor = {255, 255, 255}
   Timer.add(0.2, function() self:resetColors() end)
@@ -50,8 +51,8 @@ function Player:blockBall()
 end
 
 function Player:resetColors()
-  self.shieldColor = {71, 71, 82}
-  self.ballColor = {91, 91, 82}
+  self.shieldColor = self.origColor
+  self.ballColor = self.origColor
 end
 
 function Player:update(dt)
@@ -90,7 +91,7 @@ function Player:update(dt)
     self.wasSpaceDown = false
   end
 
-  pulse(self, "radius", 10, 0.02, 0.4)
+  pulse(self, "radius", 2, 0.02, 0.4)
   pulse(self, "shieldDrawRadius", 10, 0.02, 0.4)
 
   -- Kinematics
@@ -100,8 +101,12 @@ end
 
 function Player:draw()
   self:drawShield()
-  love.graphics.setColor(self.ballColor)
-  love.graphics.circle("fill", self.pos.x, self.ballPos.y, self.radius, 50)
+  for i = 0, self.health do
+    local col = {math.max(self.ballColor[1] - 20 * (i)), math.max(0, self.ballColor[2] - 20 * (i)), math.max(0, self.ballColor[3] - 20 * (i))}
+    --print(col[1], col[2], col[3])
+    love.graphics.setColor(col)
+    love.graphics.circle("fill", self.pos.x, self.ballPos.y, self.radius * (self.health - i), 50)
+  end
 end
 
 function Player:isBlocked(vec)
