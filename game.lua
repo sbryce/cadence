@@ -25,13 +25,12 @@ end
 
 function game:enter()
   self.player = Player(vector(400, 300))
-  local groupNames = {"floor", "driveBass", "fastFifths", "stings"}
+  local groupNames = {"dnb", "fastFifths", "stings"}
   shuffle(groupNames)
   self.noteGroups = {}
   table.insert(self.noteGroups, NoteGroup(groupNames[1], 8, self.player))
   table.insert(self.noteGroups, NoteGroup(groupNames[2], 24, self.player))
   table.insert(self.noteGroups, NoteGroup(groupNames[3], 40, self.player))
-  table.insert(self.noteGroups, NoteGroup(groupNames[4], 56, self.player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "empty" .. ".mp3"
   self.emptyTrack = love.audio.newSource(filepath)
