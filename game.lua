@@ -9,14 +9,29 @@ require 'Visualizer'
 
 game = {}
 
+function shuffle(t)
+  local n = #t
+ 
+  while n >= 2 do
+    -- n is now the last pertinent index
+    local k = math.random(n) -- 1 <= k <= n
+    -- Quick swap
+    t[n], t[k] = t[k], t[n]
+    n = n - 1
+  end
+ 
+  return t
+end
 
 function game:enter()
   self.player = Player(vector(400, 300))
+  local groupNames = {"floor", "driveBass", "fastFifths", "stings"}
+  shuffle(groupNames)
   self.noteGroups = {}
-  table.insert(self.noteGroups, NoteGroup("floor", 4, self.player))
-  table.insert(self.noteGroups, NoteGroup("syncBass", 20, self.player))
-  table.insert(self.noteGroups, NoteGroup("fastFifths", 36, self.player))
-  table.insert(self.noteGroups, NoteGroup("stings", 52, self.player))
+  table.insert(self.noteGroups, NoteGroup(groupNames[1], 8, self.player))
+  table.insert(self.noteGroups, NoteGroup(groupNames[2], 24, self.player))
+  table.insert(self.noteGroups, NoteGroup(groupNames[3], 40, self.player))
+  table.insert(self.noteGroups, NoteGroup(groupNames[4], 56, self.player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "empty" .. ".mp3"
   self.emptyTrack = love.audio.newSource(filepath)
