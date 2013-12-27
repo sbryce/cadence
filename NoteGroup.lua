@@ -27,9 +27,12 @@ end
 function NoteGroup:init(filename, startBeat, player)
   self.balls = {}
   self.obstacles = {}
+  self.tracks = {}
   self.player = player
   local filepath = filepaths.musicPath .. filename .. ".mp3"
-  self.audioSource = love.audio.newSource(filepath)
+  table.insert(self.tracks, love.audio.newSource(filepath))
+  table.insert(self.tracks, love.audio.newSource(filepath))
+  --self.audioSource = love.audio.newSource(filepath)
   local patternPath = filepaths.notePatternsPath .. filename .. ".lua"
   local pattern = loadTable(readAll(patternPath))
   self.pattern = pattern.notes
@@ -40,6 +43,7 @@ function NoteGroup:init(filename, startBeat, player)
   self.spawnDistance = 600
   self.started = false
   self.angularOffset = math.random(0, 2 * 3.14)
+  self.currentTrack = 1
 end
 
 function NoteGroup:spawnNote(noteSpecs)
@@ -91,9 +95,16 @@ function NoteGroup:update(dt)
 
   -- Things to do when first beat hits
   if game.globalBeat > self.startBeat and game.prevGlobalBeat < self.startBeat then
-    self.audioSource:play()
+    self.tracks[self.currentTrack]:play()
     self.started = true
   end
+
+  local endBeat = self.startBeat + (self.params.duration * self.currentTrack)
+  if game.globalBeat > endBeat and game.prevGlobalBeat < endBeat then
+    self.currentTrack = self.currentTrack + 1
+    self.tracks[(self.currentTrack - 1) % 2 + 1]:play()
+  end
+
 end
 
 function NoteGroup:draw()

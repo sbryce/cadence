@@ -14,8 +14,9 @@ function game:enter()
   self.player = Player(vector(400, 300))
   self.noteGroups = {}
   table.insert(self.noteGroups, NoteGroup("floor", 4, self.player))
-  table.insert(self.noteGroups, NoteGroup("fastFifths", 32, self.player))
-  table.insert(self.noteGroups, NoteGroup("stings", 8, self.player))
+  table.insert(self.noteGroups, NoteGroup("syncBass", 20, self.player))
+  table.insert(self.noteGroups, NoteGroup("fastFifths", 36, self.player))
+  table.insert(self.noteGroups, NoteGroup("stings", 52, self.player))
   love.graphics.setBackgroundColor(207, 230, 230)
   local filepath = filepaths.musicPath .. "empty" .. ".mp3"
   self.emptyTrack = love.audio.newSource(filepath)
