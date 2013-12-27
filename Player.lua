@@ -85,7 +85,6 @@ function Player:update(dt)
   if love.keyboard.isDown(" ") then
     if self.ballPos.y >= 300 and not self.wasSpaceDown then
       self.dy = -500
-      table.insert(game.effects, CollisionEffect(vector(self.ballPos.x, 300)))
     end
     self.wasSpaceDown = true
   else
