@@ -99,8 +99,10 @@ function NoteGroup:update(dt)
     self.started = true
   end
 
-  local endBeat = self.startBeat + (self.params.duration * self.currentTrack)
+  -- Repeat music
+  local endBeat = self.startBeat + ((self.params.duration) * self.currentTrack)
   if game.globalBeat > endBeat and game.prevGlobalBeat < endBeat then
+    print(game.globalBeat)
     self.currentTrack = self.currentTrack + 1
     self.tracks[(self.currentTrack - 1) % 2 + 1]:play()
   end
